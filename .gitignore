@@ -1,0 +1,14 @@
+# Arquivos locais do Visual Studio
+.vs/
+*.user
+*.suo
+
+# Arquivos gerados pela compilação
+**/bin/
+**/obj/
+
+# Configurações locais e segredos
+.env
+.env.*
+!.env.example
+appsettings.Local.json

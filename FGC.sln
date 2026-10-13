@@ -1,0 +1,63 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36310.24
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsuarioService", "FGC\UsuarioService.csproj", "{3FEC63CF-8BFE-4825-A264-D1A6CEA63E78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PagamentoService", "PagamentoService\PagamentoService.csproj", "{4AC3D6BF-F16A-45BB-AE67-BB89C838B953}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JogoService", "JogoService\JogoService.csproj", "{5CF0F4F8-C432-4BCC-8639-E5DB79FA79F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "ApiGateway\ApiGateway.csproj", "{A029E179-CB39-4751-9542-95E319A8E542}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "kubernetes", "kubernetes", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		apigateway.yaml = apigateway.yaml
+		configmap.yaml = configmap.yaml
+		hpa.yaml = hpa.yaml
+		jogoservice.yaml = jogoservice.yaml
+		namespace.yaml = namespace.yaml
+		pagamentoservice.yaml = pagamentoservice.yaml
+		rabbitmq.yaml = rabbitmq.yaml
+		secret.yaml = secret.yaml
+		sqlserver.yaml = sqlserver.yaml
+		usuarioservice.yaml = usuarioservice.yaml
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3FEC63CF-8BFE-4825-A264-D1A6CEA63E78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FEC63CF-8BFE-4825-A264-D1A6CEA63E78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FEC63CF-8BFE-4825-A264-D1A6CEA63E78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FEC63CF-8BFE-4825-A264-D1A6CEA63E78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AC3D6BF-F16A-45BB-AE67-BB89C838B953}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AC3D6BF-F16A-45BB-AE67-BB89C838B953}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AC3D6BF-F16A-45BB-AE67-BB89C838B953}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AC3D6BF-F16A-45BB-AE67-BB89C838B953}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CF0F4F8-C432-4BCC-8639-E5DB79FA79F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CF0F4F8-C432-4BCC-8639-E5DB79FA79F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CF0F4F8-C432-4BCC-8639-E5DB79FA79F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CF0F4F8-C432-4BCC-8639-E5DB79FA79F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A029E179-CB39-4751-9542-95E319A8E542}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A029E179-CB39-4751-9542-95E319A8E542}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A029E179-CB39-4751-9542-95E319A8E542}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A029E179-CB39-4751-9542-95E319A8E542}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1B5491B1-9D27-4F36-8C33-D7CDE7502EB7}
+	EndGlobalSection
+EndGlobal

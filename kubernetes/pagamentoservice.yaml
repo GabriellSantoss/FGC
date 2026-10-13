@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pagamentoservice
+  namespace: fcg
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: pagamentoservice
+
+  template:
+    metadata:
+      labels:
+        app: pagamentoservice
+
+    spec:
+      containers:
+        - name: pagamentoservice
+          image: fgc-pagamentoservice:latest
+          imagePullPolicy: Never
+
+          ports:
+            - containerPort: 8080
+
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: fcg-config
+                  key: ASPNETCORE_ENVIRONMENT
+
+            - name: ASPNETCORE_URLS
+              valueFrom:
+                configMapKeyRef:
+                  name: fcg-config
+                  key: ASPNETCORE_URLS
+
+            - name: ConnectionStrings__DefaultConnection
+              valueFrom:
+                secretKeyRef:
+                  name: fcg-secret
+                  key: PAGAMENTO_CONNECTION_STRING
+
+            - name: ConfigSecret__Secret
+              valueFrom:
+                secretKeyRef:
+                  name: fcg-secret
+                  key: JWT_SECRET
+
+            - name: RabbitMQ__Host
+              valueFrom:
+                configMapKeyRef:
+                  name: fcg-config
+                  key: RABBITMQ_HOST
+
+            - name: RabbitMQ__User
+              valueFrom:
+                configMapKeyRef:
+                  name: fcg-config
+                  key: RABBITMQ_USER
+
+            - name: RabbitMQ__Password
+              valueFrom:
+                secretKeyRef:
+                  name: fcg-secret
+                  key: RABBITMQ_PASSWORD
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pagamentoservice
+  namespace: fcg
+spec:
+  selector:
+    app: pagamentoservice
+
+  ports:
+    - port: 8080
+      targetPort: 8080
+
+  type: ClusterIP

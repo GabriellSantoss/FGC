@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sqlserver
+  namespace: fcg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sqlserver
+  template:
+    metadata:
+      labels:
+        app: sqlserver
+    spec:
+      containers:
+        - name: sqlserver
+          image: mcr.microsoft.com/mssql/server:2022-latest
+
+          ports:
+            - containerPort: 1433
+
+          env:
+            - name: ACCEPT_EULA
+              value: "Y"
+
+            - name: MSSQL_PID
+              value: "Developer"
+
+            - name: MSSQL_SA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: fcg-secret
+                  key: SA_PASSWORD
+
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "1"
+              memory: "2Gi"
+
+          volumeMounts:
+            - name: sqlserver-data
+              mountPath: /var/opt/mssql
+
+      volumes:
+        - name: sqlserver-data
+          persistentVolumeClaim:
+            claimName: sqlserver-pvc
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sqlserver-pvc
+  namespace: fcg
+spec:
+  accessModes:
+    - ReadWriteOnce
+
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sqlserver
+  namespace: fcg
+spec:
+  selector:
+    app: sqlserver
+
+  ports:
+    - port: 1433
+      targetPort: 1433
+
+  type: ClusterIP

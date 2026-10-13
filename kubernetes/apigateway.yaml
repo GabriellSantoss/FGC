@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apigateway
+  namespace: fcg
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: apigateway
+
+  template:
+    metadata:
+      labels:
+        app: apigateway
+
+    spec:
+      containers:
+        - name: apigateway
+          image: seuusuario/fcg-apigateway:latest
+          imagePullPolicy: Always
+
+          ports:
+            - containerPort: 8080
+
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: fcg-config
+                  key: ASPNETCORE_ENVIRONMENT
+
+            - name: ASPNETCORE_URLS
+              valueFrom:
+                configMapKeyRef:
+                  name: fcg-config
+                  key: ASPNETCORE_URLS
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apigateway
+  namespace: fcg
+spec:
+  selector:
+    app: apigateway
+
+  ports:
+    - port: 80
+      targetPort: 8080
+
+  type: LoadBalancer
