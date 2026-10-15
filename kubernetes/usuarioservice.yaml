@@ -3,80 +3,78 @@ kind: Deployment
 metadata:
   name: usuarioservice
   namespace: fcg
-
 spec:
   replicas: 1
-
   selector:
     matchLabels:
       app: usuarioservice
-
   template:
     metadata:
       labels:
         app: usuarioservice
-
     spec:
       containers:
-      - name: usuarioservice
+        - name: usuarioservice
+          image: fgc-usuarioservice:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: fcg-config
+                  key: ASPNETCORE_ENVIRONMENT
+            - name: ASPNETCORE_URLS
+              valueFrom:
+                configMapKeyRef:
+                  name: fcg-config
+                  key: ASPNETCORE_URLS
+            - name: ConnectionStrings__DefaultConnection
+              valueFrom:
+                secretKeyRef:
+                  name: fcg-secret
+                  key: USUARIO_CONNECTION_STRING
+            - name: Jwt__Secret
+              valueFrom:
+                secretKeyRef:
+                  name: fcg-secret
+                  key: JWT_SECRET
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            periodSeconds: 10
+            failureThreshold: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            periodSeconds: 20
+            failureThreshold: 3
 
-        image: fgc-usuarioservice:latest
-        imagePullPolicy: Never
-
-        ports:
-        - containerPort: 8080
-
-        env:
-
-        - name: ASPNETCORE_ENVIRONMENT
-          valueFrom:
-            configMapKeyRef:
-              name: fcg-config
-              key: ASPNETCORE_ENVIRONMENT
-
-        - name: ASPNETCORE_URLS
-          valueFrom:
-            configMapKeyRef:
-              name: fcg-config
-              key: ASPNETCORE_URLS
-
-        - name: ConnectionStrings__DefaultConnection
-          valueFrom:
-            secretKeyRef:
-              name: fcg-secret
-              key: USUARIO_CONNECTION_STRING
-
-        - name: Jwt__Key
-          valueFrom:
-            secretKeyRef:
-              name: fcg-secret
-              key: JWT_SECRET
-
-        resources:
-          requests:
-            cpu: "100m"
-            memory: "128Mi"
-
-          limits:
-            cpu: "500m"
-            memory: "512Mi"
-
-        
 ---
 apiVersion: v1
 kind: Service
-
 metadata:
   name: usuarioservice
   namespace: fcg
-
 spec:
-
   selector:
     app: usuarioservice
-
   ports:
-  - port: 8080
-    targetPort: 8080
-
+    - port: 8080
+      targetPort: 8080
   type: ClusterIP

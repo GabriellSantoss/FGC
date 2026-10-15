@@ -1,3 +1,16 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: rabbitmq-pvc
+  namespace: fcg
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -5,6 +18,8 @@ metadata:
   namespace: fcg
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: rabbitmq
@@ -15,33 +30,48 @@ spec:
     spec:
       containers:
         - name: rabbitmq
-          image: rabbitmq:3-management
+          image: rabbitmq:3.13-management
           ports:
             - name: amqp
               containerPort: 5672
             - name: management
               containerPort: 15672
-
           env:
+            - name: RABBITMQ_NODENAME
+              value: "rabbit@localhost"
             - name: RABBITMQ_DEFAULT_USER
               valueFrom:
                 configMapKeyRef:
                   name: fcg-config
                   key: RABBITMQ_USER
-
             - name: RABBITMQ_DEFAULT_PASS
               valueFrom:
                 secretKeyRef:
                   name: fcg-secret
                   key: RABBITMQ_PASSWORD
-
           resources:
             requests:
               cpu: "100m"
-              memory: "128Mi"
+              memory: "256Mi"
             limits:
               cpu: "500m"
               memory: "512Mi"
+          volumeMounts:
+            - name: rabbitmq-data
+              mountPath: /var/lib/rabbitmq
+          startupProbe:
+            tcpSocket:
+              port: 5672
+            periodSeconds: 10
+            failureThreshold: 30
+          readinessProbe:
+            tcpSocket:
+              port: 5672
+            periodSeconds: 10
+      volumes:
+        - name: rabbitmq-data
+          persistentVolumeClaim:
+            claimName: rabbitmq-pvc
 
 ---
 apiVersion: v1
@@ -56,9 +86,7 @@ spec:
     - name: amqp
       port: 5672
       targetPort: 5672
-
     - name: management
       port: 15672
       targetPort: 15672
-
   type: ClusterIP

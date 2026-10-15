@@ -12,3 +12,9 @@
 .env.*
 !.env.example
 appsettings.Local.json
+# Segredos e configuracoes locais
+.env
+.env.*
+!.env.example
+kubernetes/secret.yaml
+/secret.yaml

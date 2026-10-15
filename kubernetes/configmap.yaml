@@ -8,8 +8,8 @@ data:
   ASPNETCORE_URLS: "http://+:8080"
 
   RABBITMQ_HOST: "rabbitmq"
-  RABBITMQ_USER: "guest"
+  RABBITMQ_USER: "fcg"
 
-  USUARIO_SERVICE_URL: "http://usuarioservice:8080"
-  JOGO_SERVICE_URL: "http://jogoservice:8080"
-  PAGAMENTO_SERVICE_URL: "http://pagamentoservice:8080"
+  USUARIO_SERVICE_URL: "http://usuarioservice:8080/"
+  JOGO_SERVICE_URL: "http://jogoservice:8080/"
+  PAGAMENTO_SERVICE_URL: "http://pagamentoservice:8080/"
