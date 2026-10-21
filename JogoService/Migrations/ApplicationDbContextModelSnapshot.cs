@@ -97,6 +97,34 @@ namespace JogoService.Migrations
                     b.ToTable("Categorias");
                 });
 
+            modelBuilder.Entity("JogoService.Model.Compra", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("JogoId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("PagamentoId")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PagamentoId")
+                        .IsUnique();
+
+                    b.ToTable("Compras");
+                });
+
             modelBuilder.Entity("JogoService.Model.EmpresaFornecedora", b =>
                 {
                     b.Property<long>("Id")

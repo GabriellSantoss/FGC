@@ -120,6 +120,9 @@ builder.Services.AddOpenTelemetry()
         .AddRuntimeInstrumentation()
         .AddOtlpExporter());
 
+builder.Services.AddHostedService<
+    JogoService.Messaging.PagamentoAprovadoConsumer>();
+
 builder.Services.AddHealthChecks();
 
 var app = builder.Build();

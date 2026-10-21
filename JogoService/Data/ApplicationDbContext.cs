@@ -31,8 +31,14 @@ namespace JogoService.Data
             .WithMany(j => j.Avaliacoes)
             .HasForeignKey(a => a.IdJogo);
 
+            modelBuilder.Entity<Compra>()
+            .HasIndex(c => c.PagamentoId)
+            .IsUnique();
+
             base.OnModelCreating(modelBuilder);
         }
+
+        public DbSet<Compra> Compras { get; set; } = null!;
 
         public DbSet<Jogo> Jogos { get; set; } = null!;
         public DbSet<Categoria> Categorias { get; set; } = null!;

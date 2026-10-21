@@ -92,6 +92,16 @@ namespace PagamentoService.Messaging
 
                         pagamentoRepository.Atualizar(pagamento);
                         await pagamentoRepository.SalvarAlteracoesAsync();
+
+                        var publisher = scope.ServiceProvider
+                            .GetRequiredService<IRabbitMqPublisher>();
+
+                        await publisher.PublicarAsync("pagamento-aprovado", new
+                        {
+                            PagamentoId = pagamento.Id,
+                            pagamento.UsuarioId,
+                            pagamento.JogoId
+                        });
                     }
 
                     Console.WriteLine(
