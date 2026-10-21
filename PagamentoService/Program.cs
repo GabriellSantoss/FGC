@@ -101,7 +101,7 @@ builder.Services.AddHttpClient<IJogoClient, JogoClient>(client =>
 
 builder.Services.AddHttpClient<IUsuarioClient, UsuarioClient>(client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7047/");
+    client.BaseAddress = new Uri("http://usuarioservice:8080/");
 });
 
 builder.Services.AddHttpContextAccessor();
