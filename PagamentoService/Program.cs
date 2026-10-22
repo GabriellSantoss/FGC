@@ -10,6 +10,9 @@ using PagamentoService.Repositories.Interfaces;
 using PagamentoService.Services.Implementations;
 using PagamentoService.Services.Interfaces;
 using System.Text;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -107,6 +110,18 @@ builder.Services.AddHttpClient<IUsuarioClient, UsuarioClient>(client =>
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<IRabbitMqPublisher, RabbitMqPublisher>();
 builder.Services.AddHostedService<PagamentoCriadoConsumer>();
+
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(resource => resource
+        .AddService(builder.Environment.ApplicationName))
+    .WithTracing(tracing => tracing
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddOtlpExporter())
+    .WithMetrics(metrics => metrics
+        .AddAspNetCoreInstrumentation()
+        .AddRuntimeInstrumentation()
+        .AddOtlpExporter());
 
 builder.Services.AddHealthChecks();
 

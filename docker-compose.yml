@@ -48,6 +48,9 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTP_PORTS: "8080"
+      OTEL_SERVICE_NAME: UsuarioService
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://fcg-otel-collector:4317
+      OTEL_EXPORTER_OTLP_PROTOCOL: grpc
       ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=UsuarioServiceDb;User Id=sa;Password=${SQL_SA_PASSWORD};TrustServerCertificate=True;"
     depends_on:
       sqlserver:
@@ -94,6 +97,9 @@ services:
       RabbitMQ__Host: rabbitmq
       RabbitMQ__User: fcg
       RabbitMQ__Password: "${RABBITMQ_PASSWORD}"
+      OTEL_SERVICE_NAME: PagamentoService
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://fcg-otel-collector:4317
+      OTEL_EXPORTER_OTLP_PROTOCOL: grpc
     depends_on:
       sqlserver:
         condition: service_healthy
@@ -112,6 +118,9 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTP_PORTS: "8080"
+      OTEL_SERVICE_NAME: ApiGateway
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://fcg-otel-collector:4317
+      OTEL_EXPORTER_OTLP_PROTOCOL: grpc
     depends_on:
       - usuarioservice
       - jogoservice
