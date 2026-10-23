@@ -34,6 +34,11 @@ builder.Services.AddSwaggerGen(options =>
             Description = "Digite: Bearer seguido do token JWT"
         });
 
+    options.AddServer(new Microsoft.OpenApi.Models.OpenApiServer
+    {
+        Url = "/jogos"
+    });
+
     options.AddSecurityRequirement(
         new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
         {

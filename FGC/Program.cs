@@ -34,6 +34,11 @@ builder.Services.AddSwaggerGen(c =>
         Description = "Digite: Bearer {seu token JWT}"
     });
 
+    c.AddServer(new Microsoft.OpenApi.Models.OpenApiServer
+    {
+        Url = "/usuarios"
+    });
+
     c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
     {
         {
