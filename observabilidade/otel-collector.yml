@@ -6,16 +6,31 @@ receivers:
       http:
         endpoint: 0.0.0.0:4318
 
+processors:
+  batch: {}
+
 exporters:
   debug:
-    verbosity: detailed
+    verbosity: basic
+
+  prometheus:
+    endpoint: 0.0.0.0:8889
+    resource_to_telemetry_conversion:
+      enabled: true
+
+  otlp/tempo:
+    endpoint: tempo:4317
+    tls:
+      insecure: true
 
 service:
   pipelines:
     traces:
       receivers: [otlp]
-      exporters: [debug]
+      processors: [batch]
+      exporters: [debug, otlp/tempo]
 
     metrics:
       receivers: [otlp]
-      exporters: [debug]
+      processors: [batch]
+      exporters: [debug, prometheus]
