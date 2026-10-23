@@ -42,6 +42,17 @@ services:
     networks:
       - fcg-network
 
+  loki:
+    image: grafana/loki:3.2.1
+    command: ["-config.file=/etc/loki/config.yml"]
+    volumes:
+      - ./loki.yml:/etc/loki/config.yml:ro
+      - loki-data:/loki
+    ports:
+      - "3100:3100"
+    networks:
+      - fcg-network
+
 networks:
   fcg-network:
     external: true
@@ -50,3 +61,4 @@ volumes:
   prometheus-data:
   tempo-data:
   grafana-data:
+  loki-data:

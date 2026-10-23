@@ -8,11 +8,11 @@ using JogoService.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-
+using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -122,6 +122,18 @@ builder.Services.AddOpenTelemetry()
 
 builder.Services.AddHostedService<
     JogoService.Messaging.PagamentoAprovadoConsumer>();
+
+builder.Logging.AddOpenTelemetry(options =>
+{
+    options.SetResourceBuilder(
+        ResourceBuilder.CreateDefault()
+            .AddService(builder.Environment.ApplicationName));
+
+    options.IncludeFormattedMessage = true;
+    options.IncludeScopes = true;
+    options.ParseStateValues = true;
+    options.AddOtlpExporter();
+});
 
 builder.Services.AddHealthChecks();
 
