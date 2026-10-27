@@ -122,8 +122,8 @@ Use configurações locais ou variáveis de ambiente e não publique segredos no
 Na raiz do projeto, crie um arquivo `.env` local para as variáveis usadas pelo Compose, substituindo os valores por senhas próprias:
 
 ```dotenv
-SQL_SA_PASSWORD=sua_senha_forte_do_sql
-RABBITMQ_PASSWORD=sua_senha_do_rabbitmq
+SQL_SA_PASSWORD=Teste@12345
+RABBITMQ_PASSWORD=guest
 ```
 
 A senha do SQL Server deve cumprir a política de complexidade da imagem.
